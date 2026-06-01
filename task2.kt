@@ -2,7 +2,7 @@ class AppStartTimeDelegate(
     scope: CoroutineScope
 ) {
 
-    // Кешируем время один раз при создании делегата
+    // Кеширование времени один раз при создании делегата
     private val startTime: String = run {
         val timeMillis = System.currentTimeMillis()
         val formatter = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
@@ -10,7 +10,7 @@ class AppStartTimeDelegate(
     }
 
     init {
-        // Логируем кешированное значение не в UI-потоке
+        // Логирование кешированного значения не в UI-потоке
         scope.launch(Dispatchers.IO) {
             while (isActive) {
                 Log.d("time", "launch time: $startTime")
@@ -19,7 +19,7 @@ class AppStartTimeDelegate(
         }
     }
 
-    // Возвращаем уже сохранённое время при обращении к свойству
+    // Возрврат уже сохранённого времени при обращении к свойству
     operator fun getValue(thisRef: Any?, property: KProperty<*>): String {
         return startTime
     }
