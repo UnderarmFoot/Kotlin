@@ -1,8 +1,10 @@
+// Режим сохранения данных: синхронный commit или асинхронный apply
 enum class SaveMode {
     COMMIT,
     APPLY
 }
 
+// Асинхронно сохраняет данные в SharedPreferences и возвращает результат через callbacks
 fun SharedPreferences.saveAsync(
     scope: CoroutineScope,
     mode: SaveMode,
@@ -40,6 +42,7 @@ fun SharedPreferences.saveAsync(
     }
 }
 
+// Асинхронно загружает данные из SharedPreferences, отфильтрованные по ключу
 fun SharedPreferences.loadFilteredAsync(
     scope: CoroutineScope,
     onSuccess: (Map<String, Any?>) -> Unit,
@@ -51,6 +54,7 @@ fun SharedPreferences.loadFilteredAsync(
             val result = all.filterKeys { key ->
                 keyPredicate(key)
             }
+
             withContext(Dispatchers.Main) {
                 onSuccess(result)
             }
