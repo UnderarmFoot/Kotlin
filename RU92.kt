@@ -1,9 +1,11 @@
+// Описывает состояние загрузки данных: загрузка, успех или ошибка
 sealed class DataState<out T> {
     data object Loading : DataState<Nothing>()
     data class Success<T>(val data: T) : DataState<T>()
     data class Error(val throwable: Throwable) : DataState<Nothing>()
 }
 
+// Базовая ViewModel для асинхронной загрузки данных и обновления состояния
 abstract class BaseViewModel<T> : ViewModel() {
 
     private val _state = MutableStateFlow<DataState<T>>(DataState.Loading)
@@ -37,7 +39,7 @@ abstract class BaseViewModel<T> : ViewModel() {
     protected abstract suspend fun fetchData(): T
 }
 
-
+// Базовый Fragment с ViewBinding, подпиской на ViewModel и обработкой состояний UI
 abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<T>, T>(
     @LayoutRes layoutId: Int
 ) : Fragment(layoutId) {
